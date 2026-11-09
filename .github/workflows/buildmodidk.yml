@@ -3,8 +3,6 @@ name: Build Quest Mod
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
@@ -15,19 +13,18 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Setup Node.js (Non-Deprecated Version)
-      uses: actions/setup-node@v4
+    - name: Setup Android NDK
+      uses: nndung129/setup-ndk@v1
       with:
-        node-version: '22'
+        ndk-version: r25c
 
-    - name: Download and Mount QPM CLI
+    - name: Download QPM CLI
       run: |
         wget -q https://github.com
         tar -xzf qpm-linux-x64.tar.gz
         chmod +x qpm
         sudo mv qpm /usr/local/bin/
 
-    - name: Run Mod Package Generation
+    - name: Compile and Package Mod
       run: |
-        qpm restore
         qpm qmod build
