@@ -13,10 +13,12 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Setup Android NDK
-      uses: nndung129/setup-ndk@v1
-      with:
-        ndk-version: r25c
+    - name: Download Android NDK Directly from Google
+      run: |
+        wget -q https://google.com
+        unzip -q android-ndk-r25c-linux.zip
+        echo "ANDROID_NDK_HOME=$GITHUB_WORKSPACE/android-ndk-r25c" >> $GITHUB_ENV
+        echo "$GITHUB_WORKSPACE/android-ndk-r25c/toolchains/llvm/prebuilt/linux-x86_64/bin" >> $GITHUB_PATH
 
     - name: Download QPM CLI
       run: |
