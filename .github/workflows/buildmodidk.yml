@@ -1,0 +1,33 @@
+name: Build Quest Mod
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js (Non-Deprecated Version)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+
+    - name: Download and Mount QPM CLI
+      run: |
+        wget -q https://github.com
+        tar -xzf qpm-linux-x64.tar.gz
+        chmod +x qpm
+        sudo mv qpm /usr/local/bin/
+
+    - name: Run Mod Package Generation
+      run: |
+        qpm restore
+        qpm qmod build
